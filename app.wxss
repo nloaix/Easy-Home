@@ -1,0 +1,11 @@
+/**app.wxss**/
+.container {
+  height: 100%;
+  width: 100%;
+  display: flex;                  /**布局方式，灵活布局**/
+  flex-direction: column;         /**主轴方向**/
+  align-items: left;              /**定义项目在交叉轴上如何对齐**/
+  justify-content: space-between; /**项目在主轴上的对齐方式 space-between：两端对齐，项目之间的间隔都相等**/
+  padding: 10rpx 10rpx;           /**填充属性**/
+  box-sizing: border-box;
+} 

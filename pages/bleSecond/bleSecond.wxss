@@ -1,0 +1,151 @@
+.ble_contined {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    /* height: 100vh; */
+  }
+  
+  .top_are {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    background: linear-gradient(to bottom, rgba(61, 204, 202), rgba(126, 221, 220));
+  }
+  
+  .topline {
+    align-items: center;
+    background: white;
+    width: 95%;
+    height: 3rpx;
+  }
+  
+  .bat_spk {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-between;
+    width: 90%;
+    margin-top: 30rpx;
+  }
+  
+  .battveiw {
+    width: 60rpx;
+    height: 40rpx;
+  }
+  
+  .powr_off{
+    position: absolute;
+    margin-left: 10rpx;
+    width: 40rpx;
+    height: 50rpx;
+    right: 40rpx;
+  }
+  
+  .plate_area {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    position: relative;
+  }
+
+  .below_are{
+    /* background-color: red; */
+    position: relative;
+    top: 75rpx;
+  }
+  
+  .qiandu_adjust {
+    display: flex;
+    margin-right: 40rpx;
+    margin-left: 10rpx;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+  }
+  
+  .adjust_text {
+    color: rgba(61, 204, 202);
+    font-style: normal;
+    font-weight: bold;
+    padding-right: 15rpx;
+  }
+  
+  .qiandu_progress {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    width: 470rpx;
+    position: relative;
+  }
+  
+  .slider-number{
+    width: 83%;
+    margin: 0 auto;
+    position: absolute;
+    top: 70rpx;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    z-index: 99;
+  }
+  
+  .slider-number text{
+    position: absolute;
+    color: rgba(61, 204, 202);
+  }
+  
+  
+  .andjust_text {
+    color: red;
+  }
+  
+  .dec_image {
+    width: 60rpx;
+    height: 60rpx;
+  }
+  
+  .add_image {
+    width: 60rpx;
+    height: 60rpx;
+  }
+
+  
+  .mode_adjust {
+    display: flex;
+    flex-direction: row;
+    justify-content: space-around;
+    align-items: center;
+    position: relative;
+    top: 70rpx;
+  }
+
+  .mode_top {
+    position: absolute;
+    display: flex;
+    width: 300rpx;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    position: absolute;
+    top: 50rpx;
+  }
+  
+  .mode_image {
+    width: 100rpx;
+    height: 100rpx;
+  }
+  
+  .mode_chek {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+  
+  .mode_txt {
+    font-size: 25rpx;
+    font-weight: bold;
+  }
+  

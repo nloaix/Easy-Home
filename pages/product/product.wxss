@@ -1,0 +1,53 @@
+/* pages/product/product.wxss */
+.intorduc{
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color:rgb(240, 240, 240);
+  height: 100vh;
+}
+.titile{
+  color: rgb(6, 6, 90);
+}
+
+.view_picture{
+  display: flex;
+  justify-content: center;
+}
+.product_image{ 
+  height: 360rpx;
+  width: 600rpx;
+}
+
+.intorduc1{
+  display: flex;
+  flex-direction: column;
+  height: max-content;
+  margin:0rpx 40rpx 0rpx 40rpx;
+  line-height:30px;
+  color: rgb(6, 6, 90);
+}
+
+.addrs{
+  display: flex;
+  flex-direction: column;
+  height: max-content;
+  margin:0rpx 40rpx 0rpx 40rpx;
+  line-height:30px;
+  color:black;
+  padding-bottom: 80rpx;
+}
+
+.swiper_neck{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 50rpx;
+}
+.swip_picture{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+}

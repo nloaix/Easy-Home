@@ -1,0 +1,30 @@
+<!--pages/product/product.wxml-->
+<view class="intorduc">
+  <view class="view_picture">
+    <swiper class="swiper_neck" indicator-dots="{{true}}" autoplay="{{true}}" style="width:500rpx;height:400rpx">
+      <swiper-item class="swip_picture">
+        <image src="/image/neck3.png" class="product_image" style="width:400rpx;height:350rpx;" mode="aspectFit">
+        </image>
+      </swiper-item>
+      <swiper-item class="swip_picture">
+        <image src="/image/neck2.png" class="product_image" style="width:400rpx;height:300rpx;" mode="aspectFit">
+        </image>
+      </swiper-item>
+      <swiper-item class="swip_picture">
+        <image src="/image/neck1.png" class="product_image" style="width:400rpx;height:300rpx;" mode="aspectFit">
+        </image>
+      </swiper-item>
+    </swiper>
+  </view>
+
+  <view class="intorduc1">
+    <text class="titile1">* 根据人体工程学设计，美观时尚，契合颈部曲线</text>
+    <text class="titile2">* 产品携行方便，可充电锂电池，节能环保</text>
+    <text class="titile3">* 穴位热敷，低频脉冲，保护颈部健康</text>
+    <text class="titile4">* 5种按摩手法，16档按摩力度，适用各种人群</text>
+  </view>
+  <view class="addrs">
+    <text class="titile4">网址：www.pentasmart.com.cn
+      座机：0755-28392373-803</text>
+  </view>
+</view>

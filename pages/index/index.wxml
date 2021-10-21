@@ -1,0 +1,41 @@
+<!--index.wxml-->
+<wxs module="utils">
+	module.exports.max = function(n1, n2) {
+		return Math.max(n1, n2)
+	}
+	module.exports.len = function(arr) {
+		arr = arr || []
+		return arr.length
+	}
+</wxs>
+	<!-- 获取用户信息 -->
+	<view class="userInfo">
+		<block wx:if="{{!hasUserInfo}}"> 
+			<button  wx:if="{{canIUseGetUserProfile}}" bindtap="getUserProfile"> 获取头像昵称 </button>
+		</block>
+		<block wx:else>
+			<image bindtap="bindViewTap" class="userInfo-avater" src="{{userInfo.avatarUrl}}" mode="cover"></image>
+			<text class="userInfo-nickName">{{userInfo.nickName}}</text>
+		</block>
+	</view>
+
+
+	<!-- 设备列表 -->
+	<view class="findinformatin">
+		<text class="dviec_list">设备列表</text>
+		<text class="no_find" bindtap="unfind_ble">找不到设备？</text>
+	</view>	
+	<scroll-view class="device_list" scroll-y scroll-with-animation enable-flex="true">	
+		<view wx:for="{{devices}}" wx:key="index" data-device-id="{{item.deviceId}}" data-name="{{item.name || item.localName}}" bindtap="createBLEConnection" class="device_item" hover-class="device_item_hover">		
+			<view class="show_device_list" style="display: flex;margin-left: 25rpx;">
+				<image src="/image/{{(item.name === 'S8                  '  ) ? 'uNeck-9825A' : 'W2'}}.png" style="width:70rpx;height:70rpx;border-radius: 30%;" mode="aspectFit"></image>
+				<!-- <image src="/image/W2.png" style="width:70rpx;height:70rpx;border-radius: 30%;" mode="aspectFit"></image> -->
+				<!--image src="/image/ble_unkow.png" style="width:125rpx;height:120rpx; border-radius: 30%;" mode="aspectFit" wx:if="{{item.name!='ZHZL-uNeck310      '}}"></image-->
+				<view style="font-size:33rpx; color: #333;margin-left: 20rpx;margin-top: 18rpx;">{{item.name}}</view>
+			</view>
+		</view>
+	</scroll-view>
+	<view class="hand_scanf">
+		<image src="/image/search.png" bindtap="start_scan_device" style="width:100rpx;height:100rpx;" mode="aspectFit" hidden="{{scanbit_flag}}"></image>
+		<image src="/image/search.png" style="width:100rpx;height:100rpx;" mode="aspectFit" hidden="{{!scanbit_flag}}"></image>
+	</view>

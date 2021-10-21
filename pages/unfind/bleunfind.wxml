@@ -1,0 +1,32 @@
+<!--pages/unfind/bleunfind.wxml-->
+<view class="content_unconnect">
+  <view class="topline">
+    <view class="line"></view>
+  </view>
+  <view class="setp1_area">
+    <text class="step_txt">1、检查产品开机状态</text>
+    <text class="norma_text">参照产品使用说明书打开产品电源或开机</text>
+  </view>
+
+  <view class="step2_area">
+    <text class="step_txt">2、检查手机设置</text>
+    <text class="phone_type_text">安卓系统：</text>
+    <text class="norma_text">a、查看系统版本，低于 4.3 不支持 BLE蓝牙连接功能</text>
+    <text class="norma_text">b、拉出系统快捷键，开启蓝牙、位置信息功能</text>
+    <image class="photo_ble" src="/image/andor_ble.png" mode="aspectFit"></image>
+    <text class="phone_type_text">苹果系统：</text>
+    <text class="norma_text">拉出系统快捷键，开启蓝牙功能</text>
+    <image class="photo_ble" src="/image/IOS_ble.png" mode="aspectFit"></image>
+  </view>
+  <view class="step2_area">
+    <text class="step_txt">3、微信版本</text>
+    <text class="norma_text"> 点击微信“我”->“设置”->"关于微信"->"版本更新"确认微信更新到最新版本</text>
+  </view>
+  <view class="step2_area">
+    <text class="step_txt">4、连接产品</text>
+    <text class="norma_text"> 确认设置确认正确后点击“开始搜索”->选择正确蓝牙名称则可连接</text>
+  </view>
+  <view class="step_back">
+    <text class="step_back_txt" bindtap="un_connect_ble_back"> 《《 返回</text>
+  </view>
+</view>

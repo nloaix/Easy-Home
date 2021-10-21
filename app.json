@@ -1,0 +1,18 @@
+{
+  "pages": [  
+    "pages/index/index",
+    "pages/ble-w2/ble-w2",
+    "pages/ble/ble",  
+    "pages/bleSecond/bleSecond",
+    "pages/product/product",
+    "pages/unfind/bleunfind"
+  ],
+  "window": {
+    "backgroundTextStyle": "light",
+    "navigationBarBackgroundColor": "#3dcccc",
+    "navigationBarTitleText": "轻松之家bdk",
+    "navigationBarTextStyle": "white"
+  },
+  "style": "v2",
+  "sitemapLocation": "sitemap.json"
+}

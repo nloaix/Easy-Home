@@ -1,0 +1,71 @@
+/**index.wxss**/
+page {
+  background-color:rgb(240, 240, 240);
+}
+.userInfo {
+  /* background-color: red; */
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  height: 125rpx;
+}
+
+.userInfo-avater {
+  overflow: hidden;
+  width: 120rpx;
+  height: 120rpx;
+  margin-top: 45rpx;
+  margin-left: 25rpx;
+  border-radius: 50%;
+}
+
+.userInfo-nickName {
+  color: #aaa;
+  margin-top: 45rpx;
+  margin-left: 15rpx;
+}
+
+
+.findinformatin{
+  /* background-color: blue; */
+  display: flex;
+  flex-direction: row;
+  justify-content: space-between;
+  margin-right: 20rpx;
+  margin-left: 20rpx;
+  margin-top: 40rpx;
+}
+
+.dviec_list{
+  font-size: 25rpx;
+  color:rgba(61, 204, 202, 1); 
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  margin-top: 18rpx;
+}
+.no_find{
+  font-size: 25rpx;
+  color:rgba(61, 204, 202, 1);
+  text-decoration:underline;
+}
+
+.device_item{
+  display: flex;
+  flex-direction: row;
+  align-items:center;
+  width: 100%;
+  cursor: pointer;
+  margin: 15rpx;
+}
+.hand_scanf{
+  position: fixed;/**生成绝对定位的元素**/ 
+  flex-direction: column;
+  bottom: 100rpx;
+  left: 315rpx;
+}
+
+
+
+
+

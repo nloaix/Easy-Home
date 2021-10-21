@@ -1,0 +1,72 @@
+/* pages/unfind/bleunfind.wxss */
+.content_unconnect{
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  background: rgba(240, 240, 240);
+}
+.topline {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+.line{ 
+  background: white;
+  width: 95%;
+  height: 3rpx;
+}
+
+.setp1_area{   
+  display: flex;
+  flex-direction: column;
+  margin-top: 50rpx;
+  margin-left: 50rpx;
+  margin-right: 50rpx;
+  align-items: flex-start; 
+  margin-bottom: 30rpx;
+}
+
+.step_txt{
+  font-size: 28rpx;
+  font-weight: 700;
+}
+
+.norma_text{
+  font-size: 25rpx;
+  font-weight: 500;
+  padding-left: 50rpx;
+  padding-top: 10rpx;
+}
+
+.step2_area{
+  display: flex;
+  flex-direction: column;
+  margin-left: 50rpx;
+  margin-right: 50rpx;
+  align-items: flex-start; 
+  margin-bottom: 30rpx;
+}
+
+.photo_ble{
+  width: 600rpx;
+  padding-top: 10rpx;
+  padding-bottom: 10rpx;
+}
+.phone_type_text{
+  font-size: 25rpx;
+  font-weight: 700;
+  padding-left: 50rpx;
+  padding-top: 20rpx;
+}
+
+.step_back{
+  display: flex;
+  flex-direction: column;
+  align-items: center; 
+  margin-bottom: 60rpx;
+}
+.step_back_txt{
+  font-size: 28rpx;
+  font-weight: 700;
+  text-decoration:underline;
+}
