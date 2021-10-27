@@ -29,6 +29,8 @@ Page({
     canIUseGetUserProfile: false,
     devices:[],
     scanbit_flag: false,
+    envId:'',
+    openId:''
   },
 
   // 弹出窗口 
@@ -62,6 +64,7 @@ Page({
       });
       wx.hideLoading();
       console.log(that.data.devices)
+      console.log(that.data.devices.name)
       if(that.data.devices.length == 0){
         console.log("没有找到设备设备")
         that.showHintModal("没有找到设备，请打开设备！")
@@ -242,6 +245,11 @@ Page({
   },
 
   onLoad: function() {
+    // 获取用户的openid
+    this.setData({
+      envId: this.data.envId
+    })
+    this.getOpenId()
     if (wx.getUserProfile) {
       this.setData({
         canIUseGetUserProfile: true
@@ -258,21 +266,22 @@ Page({
     }
     // 界面在下一次加载就获取缓存的信息 判断是否有缓存数据
     var hasdevice = wx.getStorageSync('d111')
+    console.log(hasdevice)
     if(hasdevice){
       console.log('-------有d111这个缓存数据-----')
-      // console.log()
-      let hasdevice_name = hasdevice[0].name
-      let hasdevice_localName = hasdevice[0].localName
+      var hasdevice_name = hasdevice[0].name
+      var hasdevice_localName = hasdevice[0].localName
       console.log("hasdevice_name==="+hasdevice_name)
       console.log("hasdevice_localName==="+hasdevice_localName)
       this.setData(hasdevice)
-      console.log('-----4455-') 
+      console.log('-----4455-')
       // 此处的itemname是赋值后的devices列表中下标为0的名字 
       var itemname = 'devices['+ 0 +'].name'
       this.setData({
         devices:hasdevice,
         [itemname]:hasdevice_name+"(已连接过的设备)"
       })
+      console.log(this.data.devices)
       console.log("----成功提取----")
       // 初始化蓝牙 如果没有这个初始化蓝牙的话 下次打开后会重新连接不上，查看errCode=10000
       wx.openBluetoothAdapter({
@@ -284,6 +293,28 @@ Page({
       console.log('-------没有d111这个缓存数据------')
     }
   },
+
+  // 获取openid
+  getOpenId(){
+    wx.cloud.callFunction({
+      name:'quickstartFunctions',
+      config:{
+        env:this.data.envId
+      },
+      data:{
+        type:'getOpenId'
+      }
+    }).then((resp) => {
+      this.setData({
+        openId:resp.result.openid
+      })
+      console.log('成功得到openid'+resp.result.openid)
+      this.setOpenId()
+    }).catch((e) => {
+      console.log('0000')
+    })
+  },
+
 
   // 生命周期函数--监听页面卸载
   onUnload: function () {
@@ -307,11 +338,12 @@ Page({
     })
   },
 
-  // 获取用户信息
+  // // 获取用户信息
   getUserProfile(e) {
     wx.getUserProfile({
       desc: '用于完善会员资料', 
       success: (res) => {
+        console.log(res)
         this.setData({
           userInfo: res.userInfo,
           hasUserInfo: true
@@ -321,6 +353,7 @@ Page({
     })
   },
 
+ // 存储用户信息到本地
   setUserInfo(){
     wx.setStorage({
       key:'userInfo',
@@ -331,7 +364,18 @@ Page({
     })
   },
 
-  // 用户信息
+ // 存储OPENID到本地
+  setOpenId(){
+    wx.setStorage({
+      key:'openId',
+      data:this.data.openId,
+      success(){
+        console.log('----openid缓存成功----')
+      }
+    })
+  },
+
+  // 获取缓存在本地的用户信息
   getUserInfo(){
     wx.getStorage({
       key:'userInfo',

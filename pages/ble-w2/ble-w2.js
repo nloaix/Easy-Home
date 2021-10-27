@@ -12,12 +12,10 @@ const endAngle = 2.1 * Math.PI;
 // 圆弧扫过的弧度
 const sweepAngle = 1.2 * Math.PI;
 const ctx = wx.createCanvasContext('credit-canvas');
-const userName = wx.getStorageSync('userInfo').nickName
-const curret_time = new Date()
-console.log('当前的时间是---------')
-console.log(curret_time)
-// const db = wx.cloud.database()  //获取数据库的引用
-// const savedata = db.collection('saveData')  // 获取集合的引用
+
+const db = wx.cloud.database()  //获取数据库的引用
+const useInfoTest = db.collection('UseInfo-Test')  // 获取集合的引用
+const _ = db.command    // 数据库操作符
 
 function inArrayble(arr, key, val) {
   for (let i = 0; i < arr.length; i++) {
@@ -52,7 +50,8 @@ Page({
     min:0,
     max:16,
     value:0,
-    // buff_temp:[],
+    buff_temp:[],  // 上传的数据
+    getid:'',    // 得到用户的openId
 
     //产品功能相关
     speak_on_off: true, //语音开关  
@@ -193,9 +192,13 @@ Page({
             }
           })
         }
-        // this.setData({
-        //   buff_temp:buff_temp
-        // })
+        if(buff_temp[4] == 0){   // 表示为关机状态，因为后面数据库的原因所以在关机后不渲染其数据
+          console.log('此时已关机，不需要setData数据')
+        }else{
+          this.setData({
+            buff_temp:buff_temp
+          })
+        }
         if (!this.data.protect_time) { //1为true 0为fasle
           this.setData({
             speak_on_off: buff_temp[9],
@@ -219,7 +222,6 @@ Page({
     } 
   },
   
-
   // 监听蓝牙适配器状态
   getBluetoothState(){
     wx.getBluetoothAdapterState({
@@ -271,9 +273,14 @@ Page({
   },
   // 生命周期函数--监听页面显示
   onShow: function () {
+    this.getid()
     this.timeout = setTimeout(this.drawCredit, 100);
     // 获取devicename
     const deviceName = app.globalData.conct_name
+    this.setData({
+      devicename:deviceName 
+    })
+    console.log('onshow中的devicename==='+this.data.devicename)
     this.getBLEDeviceServices(deviceName)
   },
   
@@ -449,71 +456,109 @@ Page({
 
   // 关机操作
   ble_power_off(e) {
-    // console.log(this.buff_temp)
+    console.log('开始关机操作')
     let that = this
-    // wx.showModal({
-    //   title:'提示',
-    //   content:'确认是否退出？',
-    //   success (res) {
-    //     if (res.confirm){
-    //       console.log('用户点击确定，确认退出')
-    //       that.send_cmd_data(0x10, 0x00);
-    //       wx.navigateBack({
-    //         delta: 0,
-    //       })
-    //     }
-    //   }
-    // })
-
-    // 点击关闭按钮并且时间过了5分钟才会记录
-    // if(this.data.timeleft < 1790) {  
-    //   this.saveData()
-    // }
-    that.send_cmd_data(0x10, 0x00);
+    console.log(that.data.buff_temp)
+    this.send_cmd_data(0x10, 0x00);
     wx.navigateBack({
       delta: 0,
     })
+    // 判断用户是否登录，登录才去存储，没登录就不存储
+    var userInfo = wx.getStorageSync('userInfo')
+    if(userInfo){
+      console.log('有缓存用户信息，用户已登录，保存退出时的模式档位信息')
+      var openId = wx.getStorageSync('openId')
+      if(openId){
+        useInfoTest.where({
+          _openid:openId
+        }).get({
+          // console.log('数据库中有这个openID='+openId),
+          success:function(res){
+            console.log('用户ID为'+openId+'的数据库中的条数为'+res.data.length)
+            if(res.data.length >= 1){    //如果openid>1的话，就直接在数组后面push一个新的值
+              that.pushData()
+            }else{
+              console.log('数据库中没有此id')
+              that.add_data()
+            }
+          },
+        })
+      }else{
+        console.log('没有缓存openid')
+      }
+    }else{
+      console.log('----没有缓存用户信息，用户并没有登录，不去数据库中查找也不添加----')
+    }
+  },
+
+  // 下面的doc只能通过openId来获取id，在传入doc里面
+  getid(){
+    var openId = wx.getStorageSync('openId')
+    useInfoTest.where({
+      _openid:openId
+    }).get()
+    .then(res => {
+      console.log(res.data[0]._id)
+      this.setData({
+        getid:res.data[0]._id
+      })
+      console.log('---------去得到数据库的id------------')
+    })
+    .catch(res => {
+      console.log('数据库中没有此openid')
+    })
   },
   
-  // 保存数值
-  saveData(){
-      // 获取openid为oiftQ5BJAoDoLbbIo_0hEGbkjAqk的总记录条数，如果数量>2就删掉第一条 并在最后增加一条
-    const that = this
-    const removedata = savedata.where({
-      _openid:'oiftQ5BJAoDoLbbIo_0hEGbkjAqk'
-    }).get({
+  // 有记录就直接在字段push一个值
+  pushData(){
+    const curret_time = new Date()
+    console.log('push中的devicename==='+this.data.devicename)
+    useInfoTest.doc(this.data.getid).update({
+      data:{
+        useRecord: _.push({
+          each:[{
+            style:{
+              mode:this.data.buff_temp[5],
+              qiandu:this.data.buff_temp[6],
+              wendu:this.data.buff_temp[7]
+            },
+            time: curret_time , // 获取当前时间
+            name:this.data.devicename,   // 获取连接的设备名称
+          }],
+          slice:-10
+        })
+      }
+    }).then(res => {
+      console.log('往数组后面添加一条值成功')
+      console.log(curret_time)
+    })
+  },
+
+
+  // 往数据库中添加一条记录
+  add_data(){
+    // console.log(this.data.buff_temp)
+    var userInfo = wx.getStorageSync('userInfo')
+    const curret_time = new Date()
+    useInfoTest.add({   // 增加一条记录
+      data:{
+        name: userInfo.nickName,
+        useRecord:[{
+          style:{
+            mode:this.data.buff_temp[5],
+            qiandu:this.data.buff_temp[6],
+            wendu:this.data.buff_temp[7]
+          },
+          time: curret_time , // 获取当前时间
+          name:this.data.devicename,   // 获取连接的设备名称
+        }]
+      },
       success:function(res){
-        console.log(res.data)
-        console.log('openid为xx的总共条数为'+res.data.length+'条')
-        if(res.data.length > 2){
-          console.log('条数大于2')
-          that.add_data()  //增加一条数据，这个写在if中不会显示为什么呢 因为没有得到length的值
-        }
+        console.log('添加一条记录成功')
       }
     })
   },
 
-  add_data(){
-    console.log(buff_temp)
-    this.setData({
-      buff_temp:this.data.buff_temp
-    })
-    // savedata.add({   // 增加一条记录
-    //   data:{
-    //     name:userName,     // 用户登录才可以记录模式,如果为Null的话会不显示
-    //     style:{
-    //       mode:this.data.buff_temp[5],
-    //       qiandu:this.data.buff_temp[6],
-    //       wendu:this.data.buff_temp[7]    // 有些产品没有温度，但是就目前来看，如果值为null，将不会显示
-    //     },
-    //     time: curret_time , // 获取当前时间
-    //   }
-    // })
-    // .then(res => {
-    //   // console.log(this.data.buff_temp)
-    //   console.log(curret_time)
-    // })
-  },
 
   //语音开关
   speak_on_off_ct(e) {
