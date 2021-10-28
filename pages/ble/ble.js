@@ -195,6 +195,8 @@ Page({
         }
         if(buff_temp[4] == 0){   // 表示为关机状态，因为后面数据库的原因所以在关机后不渲染其数据
           console.log('此时已关机，不需要setData数据')
+          console.log(this.data.buff_temp)
+          this.istime()
         }else{
           this.setData({
             buff_temp:buff_temp
@@ -208,7 +210,7 @@ Page({
             wendu_index: buff_temp[7],
             mode_slect: buff_temp[5],
           })
-          console.log("当前的电量的index是："+this.data.bat_index)
+          // console.log("当前的电量的index是："+this.data.bat_index)
         }
         this.setData({
           timeleft: buff_temp[10] * 256 + buff_temp[11],
@@ -255,7 +257,6 @@ Page({
       title: "智能颈枕按摩器S8",
     })
 
-    
     var _d111 = wx.getStorageSync('d111');
     _d111[0].name = _d111[0].localName //因为localName的值一直都没改变并且和name的值相等，所以每次进入之后就将localName的值赋值给name就可以了
     // !!在安卓时两者相等，在ios端就可能不相同，到时候测试然后在看解决方法
@@ -459,37 +460,39 @@ Page({
   // 关机操作
   ble_power_off(e) {
     console.log('开始关机操作')
-    let that = this
-    console.log(that.data.buff_temp)
-    that.send_cmd_data(0x10, 0x00);
+    this.send_cmd_data(0x10, 0x00);
     wx.navigateBack({
       delta: 0,
     })
-    // 判断用户是否登录，登录才去存储，没登录就不存储
-    var userInfo = wx.getStorageSync('userInfo')
-    if(userInfo){
-      console.log('有缓存用户信息，用户已登录，保存退出时的模式档位信息')
-      var openId = wx.getStorageSync('openId')
-      if(openId){
-        useInfoTest.where({
-          _openid:openId
-        }).get({
-          // console.log('数据库中有这个openID='+openId),
-          success:function(res){
-            console.log('用户ID为'+openId+'的数据库中的条数为'+res.data.length)
-            if(res.data.length >= 1){    //如果openid>1的话，就直接在数组后面push一个新的值
-              that.pushData()
+  },
+
+  // 开始判断时间-判断用户是否登录-判断是否有此openId-进行添加
+  istime(){
+    const userInfo = wx.getStorageSync('userInfo')
+    const openId = wx.getStorageSync('openId')
+    if(this.data.timeleft < 840){
+      console.log('时间过了1分钟')
+      if(userInfo){
+        console.log('用户已登录')
+          useInfoTest.where({
+            _openid:openId
+          }).get({})
+          .then(res => {
+            // console.log('用户ID为'+openId+'的数据库中的条数为'+res.data.length)
+            // console.log(res.data.length)
+            if(res.data.length = 1){
+              console.log('数据库中有此openId'+openId)
+              this.pushData()
             }else{
-              console.log('数据库中没有此id')
-              that.add_data()
+              console.log('数据库中没有此openId')
+              this.add_data()
             }
-          },
-        })
+          })
       }else{
-        console.log('没有缓存openid')
+        console.log('用户未登录')
       }
     }else{
-      console.log('----没有缓存用户信息，用户并没有登录，不去数据库中查找也不添加----')
+      console.log('时间没过1分钟')
     }
   },
 
@@ -539,7 +542,6 @@ Page({
 
   // 往数据库中添加一条记录
   add_data(){
-    // console.log(this.data.buff_temp)
     var userInfo = wx.getStorageSync('userInfo')
     const curret_time = new Date()
     useInfoTest.add({   // 增加一条记录
