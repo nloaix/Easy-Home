@@ -28,11 +28,11 @@
 				</slider>
 				<!-- 数字 -->
 				<view class="slider-number">  
-					<block wx:if="{{min>=0 }}">
-						<block wx:for="{{max+1 }}" wx:key="index">
-							<text  hidden="{{((item%4===0)? false:true)}}" style="left: {{(item-min)*(100/max-min)-2}}%;">{{item}}</text>
-						</block>
+				<block wx:if="{{min>=0 }}">
+					<block wx:for="{{max+1 }}" wx:key="index">
+						<text  hidden="{{((item===0)? true:false)}}" style="left: {{(item-min)*(100/max-min)-2}}%;">{{item}}</text>
 					</block>
+				</block>
 				</view>
 			</view>
 			<image class="dec_image" src="/image/add.png" mode="aspectFit" bindtap="qiandu_add"></image>
@@ -42,13 +42,13 @@
 		<view class="mode_adjust">
 			<view class="mode_top">
 				<view class="mode_chek" bindtap="mode_slect_auto">
-					<image class="mode_image" src="/image/{{(mode_slect===0)? 'auto_on':'auto_off'}}.png" mode="aspectFit"></image>
-					<text class="mode_txt" style="color:{{(mode_slect===0)? '#3dccca':'#c9caca'}}">自动</text>
+					<image class="mode_image" src="/image/{{(mode_slect===1)? 'auto_on':'auto_off'}}.png" mode="aspectFit"></image>
+					<text class="mode_txt" style="color:{{(mode_slect===1)? '#3dccca':'#c9caca'}}">吮吸</text>
 				</view>
 				<view class="mode_chek" bindtap="mode_slect_guasha">
 					<image class="mode_image" src="/image/{{(mode_slect===2)? 'guasha_on':'guasha_off'}}.png" mode="aspectFit">
 					</image>
-					<text class="mode_txt" style="color:{{(mode_slect===2)? '#3dccca':'#c9caca'}}">刮痧</text>
+					<text class="mode_txt" style="color:{{(mode_slect===2)? '#3dccca':'#c9caca'}}">震动</text>
 				</view>
 			</view>
 		</view>

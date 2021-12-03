@@ -183,8 +183,11 @@ Page({
       for (ii = 0x00; ii < 19; ii++) {
         data_sum = (data_sum + buff_temp[ii]) & 0xff
       }
+      console.log(data_sum)
       if (data_sum == buff_temp[19]) {
+        console.log(buff_temp[4])
         if (buff_temp[4] === 0x00) {
+          console.log(buff_temp[4])
           console.log("产品关机**退出BLE**"+buff_temp[4]);
           wx.closeBLEConnection({
             deviceId: app.globalData.conct_deviceid,
@@ -193,7 +196,7 @@ Page({
             }
           })
         }
-        if(buff_temp[4] == 0){   // 表示为关机状态，因为后面数据库的原因所以在关机后不渲染其数据
+        if(buff_temp[4] == 0) {   // 表示为关机状态，因为后面数据库的原因所以在关机后不渲染其数据
           console.log('此时已关机，不需要setData数据')
           console.log(this.data.buff_temp)
           this.istime()
@@ -202,6 +205,9 @@ Page({
             buff_temp:buff_temp
           })
         }
+        this.setData({
+          buff_temp:buff_temp
+        })
         if (!this.data.protect_time) { //1为true 0为fasle
           this.setData({
             speak_on_off: buff_temp[9],
@@ -250,7 +256,9 @@ Page({
    */
   onLoad: function (options) {
     // common.myContent(); //需要执行才能生效哈
+    const ds = app.globalData.conct
     const deviceId = app.globalData.conct_deviceid
+    console.log(deviceId)
     this.getBLEDeviceServices(deviceId) // 获取连接device信息
     this.drawCredit();
     wx.setNavigationBarTitle({
@@ -470,7 +478,7 @@ Page({
   istime(){
     const userInfo = wx.getStorageSync('userInfo')
     const openId = wx.getStorageSync('openId')
-    if(this.data.timeleft < 840){
+    if(this.data.timeleft < 1740){
       console.log('时间过了1分钟')
       if(userInfo){
         console.log('用户已登录')
@@ -480,7 +488,7 @@ Page({
           .then(res => {
             // console.log('用户ID为'+openId+'的数据库中的条数为'+res.data.length)
             // console.log(res.data.length)
-            if(res.data.length = 1){
+            if(res.data.length >= 1){
               console.log('数据库中有此openId'+openId)
               this.pushData()
             }else{
@@ -525,7 +533,8 @@ Page({
             style:{
               mode:this.data.buff_temp[5],
               qiandu:this.data.buff_temp[6],
-              wendu:this.data.buff_temp[7]
+              wendu:this.data.buff_temp[7],
+              speak:this.data.buff_temp[9]
             },
             time: curret_time , // 获取当前时间
             name:this.data.devicename,   // 获取连接的设备名称
@@ -539,7 +548,6 @@ Page({
     })
   },
 
-
   // 往数据库中添加一条记录
   add_data(){
     var userInfo = wx.getStorageSync('userInfo')
@@ -551,7 +559,8 @@ Page({
           style:{
             mode:this.data.buff_temp[5],
             qiandu:this.data.buff_temp[6],
-            wendu:this.data.buff_temp[7]
+            wendu:this.data.buff_temp[7],
+            speak:this.data.buff_temp[9]
           },
           time: curret_time , // 获取当前时间
           name:this.data.devicename,   // 获取连接的设备名称
@@ -562,7 +571,6 @@ Page({
       }
     })
   },
-
 
   //语音开关
   speak_on_off_ct(e) {

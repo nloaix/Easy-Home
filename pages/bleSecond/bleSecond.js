@@ -44,8 +44,8 @@ Page({
     chs: [],
     ble_data_recver: [], //蓝牙数据
     devicename: 0,
-    min:0,
-    max:16,
+    min:1,
+    max:8,
     value:0,
 
     //产品功能相关
@@ -235,11 +235,10 @@ Page({
   onLoad: function (options) {
     // common.myContent(); //需要执行才能生效哈
     const deviceId = app.globalData.conct_deviceid
-    const deviceName = app.globalData.conct_name
     this.getBLEDeviceServices(deviceId) // 获取连接device信息
     this.drawCredit();
     wx.setNavigationBarTitle({
-      title: deviceName,
+      title: 'LQ-S300',
     })
   },
   
@@ -502,7 +501,7 @@ Page({
 
   qiandu_add(e) {
     let data = this.data.qiandu_index;
-    if (data < 16) data++;
+    if (data < 8) data++;
     this.set_protect_time()
     this.setData({
       qiandu_index: data,
@@ -513,7 +512,7 @@ Page({
 
   qiandu_dec(e) {
     let data = this.data.qiandu_index;
-    if (data > 0) data--;
+    if (data > 1) data--;
     this.setData({
       qiandu_index: data,
     })
@@ -525,7 +524,7 @@ Page({
   // 模式选择
   mode_slect_auto(e) {
     this.setData({
-      mode_slect: 0,
+      mode_slect: 1,
     })
     this.set_protect_time()
     this.send_cmd_data(0x11, this.data.mode_slect);
@@ -539,4 +538,3 @@ Page({
     this.send_cmd_data(0x11, this.data.mode_slect);
   }
 })
-

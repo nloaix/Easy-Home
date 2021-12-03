@@ -182,8 +182,11 @@ Page({
       for (ii = 0x00; ii < 19; ii++) {
         data_sum = (data_sum + buff_temp[ii]) & 0xff
       }
+      console.log(data_sum)
       if (data_sum == buff_temp[19]) {
+        console.log(buff_temp[4])
         if (buff_temp[4] === 0x00) {
+        console.log(buff_temp[4])
           console.log("产品关机**退出BLE**"+buff_temp[4]);
           wx.closeBLEConnection({
             deviceId: app.globalData.conct_deviceid,
@@ -192,7 +195,7 @@ Page({
             }
           })
         }
-        if(buff_temp[4] == 0){   // 表示为关机状态，因为后面数据库的原因所以在关机后不渲染其数据
+        if(buff_temp[4] == 0) {   // 表示为关机状态，因为后面数据库的原因所以在关机后不渲染其数据
           console.log('此时已关机，不需要setData数据')
           console.log(this.data.buff_temp)
           this.istime()
@@ -280,7 +283,7 @@ Page({
     // 获取devicename
     const deviceName = app.globalData.conct_name
     this.setData({
-      devicename:deviceName 
+      devicename:deviceName
     })
     console.log('onshow中的devicename==='+this.data.devicename)
     this.getBLEDeviceServices(deviceName)
@@ -477,9 +480,10 @@ Page({
             _openid:openId
           }).get({})
           .then(res => {
+            // console.log(res.data)
             // console.log('用户ID为'+openId+'的数据库中的条数为'+res.data.length)
             // console.log(res.data.length)
-            if(res.data.length = 1){
+            if(res.data.length >= 1){
               console.log('数据库中有此openId'+openId)
               this.pushData()
             }else{
@@ -524,7 +528,8 @@ Page({
             style:{
               mode:this.data.buff_temp[5],
               qiandu:this.data.buff_temp[6],
-              wendu:this.data.buff_temp[7]
+              wendu:this.data.buff_temp[7],
+              speak:this.data.buff_temp[9]
             },
             time: curret_time , // 获取当前时间
             name:this.data.devicename,   // 获取连接的设备名称
@@ -549,7 +554,8 @@ Page({
           style:{
             mode:this.data.buff_temp[5],
             qiandu:this.data.buff_temp[6],
-            wendu:this.data.buff_temp[7]
+            wendu:this.data.buff_temp[7],
+            speak:this.data.buff_temp[9]
           },
           time: curret_time , // 获取当前时间
           name:this.data.devicename,   // 获取连接的设备名称

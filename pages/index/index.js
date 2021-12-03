@@ -2,6 +2,10 @@
 //获取应用实例
 const app = getApp()
 
+const db = wx.cloud.database()  //获取数据库的引用
+const useInfoTest = db.collection('UseInfo-Test')  // 获取集合的引用
+const _ = db.command    // 数据库操作符
+
 function inArray(arr, key, val) {
   for (let i = 0; i < arr.length; i++) {
     if (arr[i][key] === val) {
@@ -30,7 +34,9 @@ Page({
     devices:[],
     scanbit_flag: false,
     envId:'',
-    openId:''
+    openId:'',
+    recentlyUseRecord:[],
+    pic:'',
   },
 
   // 弹出窗口 
@@ -64,7 +70,6 @@ Page({
       });
       wx.hideLoading();
       console.log(that.data.devices)
-      console.log(that.data.devices.name)
       if(that.data.devices.length == 0){
         console.log("没有找到设备设备")
         that.showHintModal("没有找到设备，请打开设备！")
@@ -168,28 +173,23 @@ Page({
   // 以上为蓝牙扫描相关方法/////////////////////////////////////////////////////////////////////////////////////////////////////////////
   // 连接点击
   createBLEConnection(e) {
-    const arr = new Array(this.data.devices[0])
-    const arr1 = new Array(this.data.devices[1])
     const ds = e.currentTarget.dataset
+    const index = ds.index
+    const arr = new Array(this.data.devices[index])
     const deviceId = ds.deviceId
     const name = ds.name
     // 此处的deviceId是点击连接设备的id
-    console.log("当前点击连接设备的id==="+deviceId)
-    // 此处device_list_id是设备列表中下标位0的设备id
-    const device_list_id = this.data.devices[0].deviceId
-    if(deviceId == device_list_id){
+    console.log("当前点击连接设备的index==="+index)
+    if ( name != 'LQ-S300' ) {
       wx.setStorage({
         key:'d111',
         data:arr,
         success(){
-          console.log('--存储数据arr成功------')
+          console.log('--存储数据arr成功---')
         }
       })
-    }else{
-      wx.setStorage({
-        key:'d111',
-        data:arr1
-      })
+    } else {
+      console.log('name===LQ-S300,不进行保存')
     }
     if (this._discoveryStarted) {
       wx.stopBluetoothDevicesDiscovery()
@@ -203,22 +203,29 @@ Page({
       timeout: 4000,
       success: (res) => {
         app.globalData.conct_deviceid = deviceId,
-        app.globalData.conct_name = name,
-        // conctDeviceId = app.globalData.conct_deviceid,
-        // conctName = app.globalData.conct_name,
-        console.log("name============="+name)
+        app.globalData.conct_name = name;
+        let str = app.globalData.conct_name;
+        console.log("name============="+ str)
         wx.hideLoading();
-        var regex = /^S.\s+/;
-        if(regex.test(name)){
-          console.log('name===s8' )
-          wx.navigateTo({
-            url: '/pages/ble/ble',
-          })
-        }else{
-          console.log('name===w2')
-          wx.navigateTo({
-            url: '/pages/ble-w2/ble-w2',
-          })
+        switch (true) {
+          case  /^S.\s+/.test(str):
+            console.log('name===S8' );
+            wx.navigateTo({
+              url: '/pages/ble/ble',
+            });
+            break;
+          case /^L.+/.test(str) :
+            console.log('name===LQ-S300');
+            wx.navigateTo({
+              url: '/pages/bleSecond/bleSecond',
+            });
+            break;
+          case /W.+/.test(str) :
+            console.log('name===W2');
+            wx.navigateTo({
+              url: '/pages/ble-w2/ble-w2',
+            });
+            break;
         }
       },
       fail: (res) => {
@@ -391,6 +398,24 @@ Page({
   unfind_ble: function () {
     wx.navigateTo({
       url: '/pages/unfind/bleunfind',
+    })
+  },
+
+  onShow:function () {
+    this.getRecentlyDevice()
+  },
+
+  // 得到数据库中的保存的列表
+  getRecentlyDevice(){
+    var openId = wx.getStorageSync('openId')
+    useInfoTest.where({
+      _openid:openId
+    }).get()
+    .then(res => {
+      console.log(res.data[0].useRecord)
+      this.setData({
+        recentlyUseRecord:res.data[0].useRecord
+      })
     })
   }
 })
