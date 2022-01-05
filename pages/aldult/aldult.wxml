@@ -1,0 +1,68 @@
+<!--pages/aldult/aldult.wxml-->
+<view class="container">
+    <view class="top">
+        <image class="product" src="/image/lq_product_one.png" mode="heightFix"></image>
+        <view class="countdown">
+            <text class="on_off">已开启</text>
+            <view class="battery">
+                <image class="battery_icon" src="/image/lq_battery_0.png"></image>
+                <text>剩余电量</text>
+            </view>
+            <image class="switch" src="/image/lq_switch.png" bindtap="ble_power_off"></image>
+        </view>
+    </view>
+    
+    <!-- 中间类型选择 -->
+    <view class="middle_part">
+        <text class="middle_text">狐口吮潮</text>
+        <view class="middle">
+            <view class="middle_type">
+                <view class="middle_top">
+                    <view class="type_one">
+                        <image  src="/image/{{(mode_slect == 17) ? 'lq_heartbeat' : 'lq_heartbeat_unselected' }}.png" mode="aspectFill" bindtap="mode_slect_heartbeat"></image>
+                        <text>怦然心动</text>
+                    </view>
+                    <view class="type_two">    
+                        <image src="/image/{{(mode_slect == 18) ? 'lq_gettingbetter' : 'lq_gettingbetter_unselected' }}.png" mode="aspectFill" bindtap="mode_slect_gettingbetter"></image>
+                        <text>渐入佳境</text>
+                    </view>
+                </view>
+                <view class="middle_bottom">
+                    <view class="type_three">                
+                        <image src="/image/{{(mode_slect == 19) ? 'lq_passion' : 'lq_passion_unselected'}}.png" bindtap="mode_slect_passion"></image>
+                        <text>激情娇喘</text>
+                    </view>
+                    <view class="type_four">  
+                        <image src="/image/{{(mode_slect == 20) ? 'lq_water' : 'lq_water_unselected'}}.png" bindtap="mode_slect_water"></image>
+                        <text>爱如潮水</text>
+                    </view>
+                </view>
+            </view>
+        </view>
+    </view>
+
+    <!-- 底部 -->
+    <view class="bottom_part">
+        <text class="bottom_text">狐尾震颤</text>
+        <view class="bottom">
+            <view class="intensity">
+                <view class="intensity-text">
+                    <text class="qiandu">强度</text>
+                    <text class="intensity-level">{{qiandu_index}}级</text>
+                </view>
+                <view class="slider_box">
+                    <slider class="intensity-slider" min="0" max="8" block-size="18" bindchange="sliderchanging"  value="{{qiandu_index}}"></slider>
+                    <!-- 数字 -->
+                    <view class="slider_number">  
+                    <block wx:if="{{min>=0 }}">
+                        <block wx:for="{{max+1 }}" wx:key="index">
+                            <text style="left: {{(item-min)*(100/max-min)-2}}%;">{{item}}</text>
+                        </block>
+                    </block>
+                    </view>
+                </view>
+            </view>
+        </view>
+    </view>
+    
+</view>

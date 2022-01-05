@@ -217,7 +217,7 @@ Page({
           case /^L.+/.test(str) :
             console.log('name===LQ-S300');
             wx.navigateTo({
-              url: '/pages/bleSecond/bleSecond',
+              url: '/pages/aldult/aldult',
             });
             break;
           case /W.+/.test(str) :
