@@ -3,8 +3,7 @@
     "pages/index/index",
     "pages/aldult/aldult",
     "pages/ble-w2/ble-w2",
-    "pages/ble/ble",  
-    "pages/bleSecond/bleSecond",
+    "pages/ble/ble",
     "pages/product/product",
     "pages/unfind/bleunfind"
   ],

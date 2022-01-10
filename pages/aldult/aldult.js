@@ -240,6 +240,10 @@ Page({
     wx.setNavigationBarTitle({
       title: 'LQ-S300',
     })
+    wx.setNavigationBarColor({
+      backgroundColor: '#fff3f3',
+      frontColor: '#000000',
+    })
   },
   
   // 生命周期函数--监听页面卸载

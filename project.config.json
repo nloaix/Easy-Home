@@ -6,7 +6,7 @@
     "setting": {
         "urlCheck": true,
         "es6": false,
-        "enhance": true,
+        "enhance": false,
         "postcss": true,
         "preloadBackgroundData": false,
         "minified": true,
@@ -30,7 +30,6 @@
             "disablePlugins": [],
             "outputPath": ""
         },
-        "enableEngineNative": false,
         "useIsolateContext": true,
         "userConfirmedBundleSwitch": false,
         "packNpmManually": false,
@@ -42,9 +41,9 @@
         "minifyWXML": true
     },
     "compileType": "miniprogram",
-    "libVersion": "2.19.1",
+    "libVersion": "2.21.2",
     "appid": "wxb261edf8384e732d",
-    "projectname": "Easy-Home",
+    "projectname": "BLE",
     "debugOptions": {
         "hidedInDevtools": []
     },
@@ -52,6 +51,7 @@
     "isGameTourist": false,
     "simulatorType": "wechat",
     "simulatorPluginLibVersion": {},
+    "cloudfunctionTemplateRoot": "cloudfunctionTemplate",
     "condition": {
         "search": {
             "list": []
